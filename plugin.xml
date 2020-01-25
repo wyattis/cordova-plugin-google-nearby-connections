@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-google-nearby-connections" version="0.0.1" 
+    xmlns="http://apache.org/cordova/ns/plugins/1.0" 
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>GoogleNearbyConnections</name>
+    <js-module name="GoogleNearbyConnections" src="www/GoogleNearbyConnections.js">
+        <clobbers target="cordova.plugins.GoogleNearbyConnections" />
+    </js-module>
+    <platform name="android">
+        <framework src="com.google.android.gms:play-services-nearby:17.0.0" />
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="GoogleNearbyConnections">
+                <param name="android-package" value="org.kspierson.cordova.GoogleNearbyConnections" />
+            </feature>
+        </config-file>
+        <config-file parent="/*" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.BLUETOOTH" />
+            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+            <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+        </config-file>
+        <source-file src="src/android/GoogleNearbyConnections.java" target-dir="src/org/kspierson/cordova/GoogleNearbyConnections" />
+    </platform>
+</plugin>
