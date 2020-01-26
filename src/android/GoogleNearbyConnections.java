@@ -197,6 +197,18 @@ public class GoogleNearbyConnections extends CordovaPlugin {
                     startDiscovery(strategyType, serviceId, callbackContext);
                 });
                 return true;
+            case "stopAdvertising":
+                cordova.getThreadPool().execute(() -> {
+                    stopAdvertising(callbackContext);
+                });
+            case "stopDiscovery":
+                cordova.getThreadPool().execute(() -> {
+                    stopDiscovery(callbackContext);
+                });
+            case "stopAllEndpoints":
+                cordova.getThreadPool().execute(() -> {
+                    stopAllEndpoints(callbackContext);
+                });
             case "onEndpointFound":
                 this.endpointFoundCallback = callbackContext;
                 return true;
@@ -214,20 +226,24 @@ public class GoogleNearbyConnections extends CordovaPlugin {
                 return true;
             case "acceptConnection":
                 endpointId = args.getString(0);
-                this.acceptConnection(endpointId);
+                this.acceptConnection(endpointId, callbackContext);
                 return true;
             case "denyConnection":
                 endpointId = args.getString(0);
-                this.denyConnection(endpointId);
+                this.denyConnection(endpointId, callbackContext);
                 return true;
             case "sendPayload":
                 endpointId = args.getString(0);
                 payload = args.getString(1);
                 //payload = args.getJSONObject(1);
-                this.sendPayload(endpointId, payload);
+                this.sendPayload(endpointId, payload, callbackContext);
                 return true;
             case "onPayloadReceived":
                 this.payloadReceivedCallback = callbackContext;
+                return true;
+            case "disconnectFromEndpoint":
+                endpointId = args.getString(0);
+                this.disconnectFromEndpoint(endpointId, callbackContext);
                 return true;
             default:
                 return false;
@@ -273,17 +289,55 @@ public class GoogleNearbyConnections extends CordovaPlugin {
         );
     }
 
-    private void acceptConnection(String endpointId) {
-        Nearby.getConnectionsClient(this.context).acceptConnection(endpointId, payloadCallback);
+    private void acceptConnection(String endpointId, CallbackContext callbackContext) {
+        Nearby.getConnectionsClient(this.context).acceptConnection(endpointId, payloadCallback)
+                .addOnSuccessListener((Void unused) -> {
+                    callbackContext.success();
+                }).addOnFailureListener((Exception e) -> {
+                    callbackContext.error(e.getMessage());
+                }
+        );
     }
 
-    private void denyConnection(String endpointId) {
-        Nearby.getConnectionsClient(this.context).rejectConnection(endpointId);
+    private void denyConnection(String endpointId, CallbackContext callbackContext) {
+        Nearby.getConnectionsClient(this.context).rejectConnection(endpointId)
+                .addOnSuccessListener((Void unused) -> {
+                    callbackContext.success();
+                }).addOnFailureListener((Exception e) -> {
+                    callbackContext.error(e.getMessage());
+                }
+        );
     }
 
-    private void sendPayload(String endpointId, String payloadString) {
+    private void sendPayload(String endpointId, String payloadString, CallbackContext callbackContext) {
         byte[] bytesPayload = payloadString.getBytes();
         Payload payload = Payload.fromBytes(bytesPayload);
-        Nearby.getConnectionsClient(this.context).sendPayload(endpointId, payload);
+        Nearby.getConnectionsClient(this.context).sendPayload(endpointId, payload)
+                .addOnSuccessListener((Void unused) -> {
+                    callbackContext.success();
+                }).addOnFailureListener((Exception e) -> {
+                    callbackContext.error(e.getMessage());
+                }
+        );
+    }
+
+    private void stopAdvertising(CallbackContext callbackContext) {
+        Nearby.getConnectionsClient(this.context).stopAdvertising();
+        callbackContext.success();
+    }
+
+    private void stopDiscovery(CallbackContext callbackContext) {
+        Nearby.getConnectionsClient(this.context).stopDiscovery();
+        callbackContext.success();
+    }
+
+    private void stopAllEndpoints(CallbackContext callbackContext) {
+        Nearby.getConnectionsClient(this.context).stopAllEndpoints();
+        callbackContext.success();
+    }
+
+    private void disconnectFromEndpoint(String endpointId, CallbackContext callbackContext) {
+        Nearby.getConnectionsClient(this.context).disconnectFromEndpoint(endpointId);
+        callbackContext.success();
     }
 }

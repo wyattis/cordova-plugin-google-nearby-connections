@@ -8,6 +8,18 @@ exports.startDiscovery = function(strategyType, serviceId, success, error) {
     exec(success, error, 'GoogleNearbyConnections', 'startDiscovery', [strategyType, serviceId]);
 }
 
+exports.stopAdvertising = function(success, error) {
+    exec(success, error, 'GoogleNearbyConnections', 'stopAdvertising', []);
+}
+
+exports.stopDiscovery = function(success, error) {
+    exec(success, error, 'GoogleNearbyConnections', 'stopDiscovery', []);
+}
+
+exports.stopAllEndpoints = function(success, error) {
+    exec(success, error, 'GoogleNearbyConnections', 'stopAllEndpoints', []);
+}
+
 exports.onEndpointFound = function(success, error) {
     exec(success, error, 'GoogleNearbyConnections', 'onEndpointFound', []);
 }
@@ -42,6 +54,10 @@ exports.sendPayload = function(endpointId, payload, success, error) {
 
 exports.onPayloadReceived = function(success, error) {
     exec(success, error, 'GoogleNearbyConnections', 'onPayloadReceived', []);
+}
+
+exports.disconnectFromEndpoint = function(endpointId, success, error) {
+    exec(success, error, 'GoogleNearbyConnections', 'disconnectFromEndpoint', [endpointId]);
 }
 
 
