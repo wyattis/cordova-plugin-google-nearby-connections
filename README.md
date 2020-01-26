@@ -1,6 +1,6 @@
 
 
-[![](https://img.shields.io/npm/v/cordova-plugin-google-nearby-connections.svg)](https://www.npmjs.com/package/cordova-plugin-google-nearby)
+[![](https://img.shields.io/npm/v/cordova-plugin-google-nearby-connections.svg)](https://www.npmjs.com/package/cordova-plugin-google-nearby-connections)
 
 # Description
 
