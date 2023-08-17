@@ -45,8 +45,9 @@ public class GoogleNearbyConnections extends CordovaPlugin {
 
     private static final int REQUEST_CODE = 1;
     private static final String[] REQUIRED_PERMISSIONS = new String[]{
-            Manifest.permission.BLUETOOTH,
-            Manifest.permission.BLUETOOTH_ADMIN,
+            Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.BLUETOOTH_ADVERTISE,
+            Manifest.permission.BLUETOOTH_CONNECT,
             Manifest.permission.ACCESS_WIFI_STATE,
             Manifest.permission.CHANGE_WIFI_STATE,
             Manifest.permission.ACCESS_FINE_LOCATION,
